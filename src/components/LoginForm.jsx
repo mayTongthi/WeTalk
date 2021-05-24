@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const projectID ='1b7801d6-8a66-4be4-a442-89219d833dfc';
 
+
 const Modal = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,25 +12,25 @@ const Modal = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const authObject = { 'Project-ID': '1b7801d6-8a66-4be4-a442-89219d833dfc', 'User-Name': username, 'User-Secret': password };
-     
-    try {
-      await axios.get('https://api.chatengine.io/chats/', { headers: authObject });
+    const authObject = { 'Project-ID': projectID, 'User-Name': username, 'User-Secret': password };
 
-      localStorage.setItem('username', username);
+    try {
+      await axios.get('https://api.chatengine.io/chats', { headers: authObject });
+
+      localStorage.setItem('username', username); // authObject['User-Name'] => username
       localStorage.setItem('password', password);
-      
+
       window.location.reload();
       setError('');
-    } catch (error) {
-      setError('Try Again');
+    } catch (err) {
+      setError('Oops, incorrect credentials.');
     }
   };
 
   return (
     <div className="wrapper">
       <div className="form">
-        <h1 className="title">WeTalk</h1>
+        <h1 className="title">Chat Application</h1>
         <form onSubmit={handleSubmit}>
           <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className="input" placeholder="Username" required />
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="input" placeholder="Password" required />
